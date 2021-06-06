@@ -5,6 +5,8 @@ import com.residencia.dell.entities.OrderLines;
 import com.residencia.dell.services.OrderlinesService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +36,9 @@ public class OrderLinesController {
         return new ResponseEntity <> (orderlinesService.findById(orderlineid, orderid), headers, HttpStatus.OK);
     }
     
-    @GetMapping
-	public ResponseEntity <List <OrderLines>> findAll () {
-            List <OrderLines> listOrderLines = orderlinesService.findAll();
+    @GetMapping //paginacao com parametro, passa os parametros na requisicao 
+	public ResponseEntity <List <OrderLines>> findAll (Pageable pagina) {
+            List <OrderLines> listOrderLines = orderlinesService.findAll(pagina);
             return ResponseEntity.ok().body(listOrderLines);
         }
         

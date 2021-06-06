@@ -1,10 +1,11 @@
 
 package com.residencia.dell.controllers;
 
-import com.residencia.dell.entities.Orders;
+import com.residencia.dell.VO.OrdersVO;
 import com.residencia.dell.services.OrdersService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +30,15 @@ public class OrdersController {
     private OrdersService ordersService;
     
     @GetMapping ("/{id}")
-    public ResponseEntity <Orders> findById (@PathVariable Integer id) {
+    public ResponseEntity <OrdersVO> findById (@PathVariable Integer id) {
         HttpHeaders headers = new HttpHeaders (); 
         return new ResponseEntity <> (ordersService.findById(id), headers, HttpStatus.OK);
     }
     
-    @GetMapping
-	public ResponseEntity <List <Orders>> findAll () {
-            List <Orders> listOrders = ordersService.findAll();
-            return ResponseEntity.ok().body(listOrders);
+    @GetMapping //Paginacao com parametro, passa os parametros na requisicao
+	public ResponseEntity <List <OrdersVO>> findAll (Pageable pagina) {
+            List <OrdersVO> listOrdersVO = ordersService.findAll(pagina);
+            return ResponseEntity.ok().body(listOrdersVO);
         }
         
     @GetMapping ("/count")
@@ -46,24 +47,24 @@ public class OrdersController {
         }
         
     @PostMapping
-        public ResponseEntity <Orders> save (@RequestBody Orders order) {
+        public ResponseEntity <OrdersVO> save (@RequestBody OrdersVO orderVO) {
            HttpHeaders headers = new HttpHeaders();
-           Orders orders = ordersService.save(order);
-            if(null != orders)
-		return ResponseEntity.ok().body(orders);
+           OrdersVO ordersVO = ordersService.save(orderVO);
+            if(null != ordersVO)
+		return ResponseEntity.ok().body(ordersVO);
             else
-		return new ResponseEntity<>(ordersService.save(orders), headers, HttpStatus.BAD_REQUEST); 
+		return new ResponseEntity<>(ordersService.save(ordersVO), headers, HttpStatus.BAD_REQUEST); 
         }
         
     @PutMapping ("/{id}")
-        public ResponseEntity <Orders> update (@PathVariable Integer id, @RequestBody Orders orders) {
+        public ResponseEntity <OrdersVO> update (@PathVariable Integer id, @RequestBody OrdersVO ordersVO) {
             HttpHeaders headers = new HttpHeaders ();
-            return new ResponseEntity <> (ordersService.update(id, orders), headers, HttpStatus.OK);
+            return new ResponseEntity <> (ordersService.update(id, ordersVO), headers, HttpStatus.OK);
         }
         
     
     @DeleteMapping ("/{id}")
-        public ResponseEntity<Orders> delete(@PathVariable Integer id) {
+        public ResponseEntity<OrdersVO> delete(@PathVariable Integer id) {
             try {
                 ordersService.delete(id);
             } catch (Exception e) {

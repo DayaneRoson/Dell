@@ -5,6 +5,7 @@ import com.residencia.dell.entities.Products;
 import com.residencia.dell.repositories.ProductsRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,8 +22,8 @@ public class ProductsService {
        return productsRepository.findById (id).get();
     }
     
-    public List <Products> findAll () {
-        return productsRepository.findAll();
+    public List <Products> findAll (Pageable page) {
+        return productsRepository.findAll(page).getContent();
     }
     
     public Long count () {

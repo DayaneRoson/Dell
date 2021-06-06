@@ -7,6 +7,8 @@ import com.residencia.dell.repositories.OrderLinesRepository;
 import com.residencia.dell.repositories.OrdersRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,11 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderlinesService {
     
-    @Autowired
+    @Autowired //acabei de descobrir que nao pode ter injecoes de dependencia que voce nao ta usando no negocio
     public OrderLinesRepository orderlinesRepository;
-    
-    @Autowired
-    public OrderLines orderline;
     
     @Autowired
     public OrdersRepository ordersRepository;
@@ -31,8 +30,8 @@ public class OrderlinesService {
        return orderlinesRepository.findByOrderLineIdAndOrders(orderlineid, order);
     }
     
-    public List <OrderLines> findAll () {
-        return orderlinesRepository.findAll();
+    public List <OrderLines> findAll (Pageable page) {
+        return orderlinesRepository.findAll(page).getContent();
     }
     
     public Long count () {

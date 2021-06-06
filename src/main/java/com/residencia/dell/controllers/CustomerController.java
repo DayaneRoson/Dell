@@ -1,11 +1,11 @@
 
 package com.residencia.dell.controllers;
 
+import com.residencia.dell.entities.Customers;
 import com.residencia.dell.entities.Products;
-import com.residencia.dell.services.ProductsService;
+import com.residencia.dell.services.CustomerService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,50 +24,50 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Dayane
  */
 @RestController
-@RequestMapping ("/products")
-public class ProductsController {
+@RequestMapping ("/customers")
+public class CustomerController {
     
     @Autowired
-    private ProductsService productsService;
+    private CustomerService customerService;
     
     @GetMapping ("/{id}")
-    public ResponseEntity <Products> findById (@PathVariable Integer id) {
+    public ResponseEntity <Customers> findById (@PathVariable Integer id) {
         HttpHeaders headers = new HttpHeaders (); 
-        return new ResponseEntity <> (productsService.findById(id), headers, HttpStatus.OK);
+        return new ResponseEntity <> (customerService.findById(id), headers, HttpStatus.OK);
     }
     
     @GetMapping //Paginacao com parametro, passa os parametros na requisicao
-	public ResponseEntity <List <Products>> findAll (Pageable pagina) {
-            List <Products> listProducts = productsService.findAll(pagina);
-            return ResponseEntity.ok().body(listProducts);
+	public ResponseEntity <List <Customers>> findAll (Pageable pagina) {
+            List <Customers> listCustomers = customerService.findAll(pagina);
+            return ResponseEntity.ok().body(listCustomers);
         }
         
     @GetMapping ("/count")
         public Long count() {
-            return productsService.count();
+            return customerService.count();
         }
         
     @PostMapping
-        public ResponseEntity <Products> save (@RequestBody Products product) {
+        public ResponseEntity <Customers> save (@RequestBody Customers customer) {
            HttpHeaders headers = new HttpHeaders();
-           Products products = productsService.save(product);
-            if(null != products)
-		return ResponseEntity.ok().body(products);
+           Customers customers = customerService.save(customer);
+            if(null != customers)
+		return ResponseEntity.ok().body(customers);
             else
-		return new ResponseEntity<>(productsService.save(products), headers, HttpStatus.BAD_REQUEST); 
+		return new ResponseEntity<>(customerService.save(customers), headers, HttpStatus.BAD_REQUEST); 
         }
         
     @PutMapping ("/{id}")
-        public ResponseEntity <Products> update (@PathVariable Integer id, @RequestBody Products product) {
+        public ResponseEntity <Customers> update (@PathVariable Integer id, @RequestBody Customers customer) {
             HttpHeaders headers = new HttpHeaders ();
-            return new ResponseEntity <> (productsService.update(id, product), headers, HttpStatus.OK);
+            return new ResponseEntity <> (customerService.update(id, customer), headers, HttpStatus.OK);
         }
         
     
     @DeleteMapping ("/{id}")
         public ResponseEntity<Products> delete(@PathVariable Integer id) {
             try {
-                productsService.delete(id);
+                customerService.delete(id);
             } catch (Exception e) {
                 return ResponseEntity.notFound().build();
             }
