@@ -25,14 +25,6 @@ public class Categories {
     @Column (name = "category")
     private Integer category;
 
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-    
     @Column (name = "categoryname")
     private String categoryName;
 
@@ -44,5 +36,11 @@ public class Categories {
         this.categoryName = categoryName;
     }
     
-    
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
 }

@@ -2,9 +2,7 @@
 package com.residencia.dell.services;
 
 import com.residencia.dell.entities.Customers;
-import com.residencia.dell.entities.Products;
 import com.residencia.dell.repositories.CustomersRepository;
-import com.residencia.dell.repositories.ProductsRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

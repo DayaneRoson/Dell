@@ -1,6 +1,7 @@
 
 package com.residencia.dell.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
@@ -22,10 +23,29 @@ import javax.persistence.Table;
 @Table (name = "orders")
 public class Orders {
     
-    @Id
+    @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "orderid")
     private Integer orderId;
+
+    @Column (name = "orderdate")
+    private Calendar orderDate;
+
+    @ManyToOne
+    @JoinColumn (name = "customerid", referencedColumnName = "customerid")
+    private Customers customer;
+
+    @Column (name = "netamount")
+    private BigDecimal netAmount;
+
+    @Column (name = "tax")
+    private BigDecimal tax;
+
+    @Column (name = "totalamount")
+    private BigDecimal totalAmount;
+
+    @OneToMany (mappedBy = "orders")
+    private List <OrderLines> listOrderLines;
 
     public Integer getOrderId() {
         return orderId;
@@ -34,9 +54,6 @@ public class Orders {
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
-    
-    @Column (name = "orderdate")
-    private Calendar orderDate;
 
     public Calendar getOrderDate() {
         return orderDate;
@@ -45,10 +62,6 @@ public class Orders {
     public void setOrderDate(Calendar orderDate) {
         this.orderDate = orderDate;
     }
-    
-    @ManyToOne
-    @JoinColumn (name = "customerid", referencedColumnName = "customerid")
-    private Customers customer;
 
     public Customers getCustomer() {
         return customer;
@@ -57,9 +70,6 @@ public class Orders {
     public void setCustomer(Customers customer) {
         this.customer = customer;
     }
-    
-    @Column (name = "netamount")
-    private BigDecimal netAmount;
 
     public BigDecimal getNetAmount() {
         return netAmount;
@@ -68,9 +78,6 @@ public class Orders {
     public void setNetAmount(BigDecimal netAmount) {
         this.netAmount = netAmount;
     }
-    
-    @Column (name = "tax")
-    private BigDecimal tax;
 
     public BigDecimal getTax() {
         return tax;
@@ -79,9 +86,6 @@ public class Orders {
     public void setTax(BigDecimal tax) {
         this.tax = tax;
     }
-    
-    @Column (name = "totalamount")
-    private BigDecimal totalAmount;
 
     public BigDecimal getTotalAmount() {
         return totalAmount;
@@ -90,9 +94,6 @@ public class Orders {
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
-    
-    @OneToMany (mappedBy = "orders")
-    private List <OrderLines> listOrderLines;
 
     public List<OrderLines> getListOrderLines() {
         return listOrderLines;
@@ -101,4 +102,7 @@ public class Orders {
     public void setListOrderLines(List<OrderLines> listOrderLines) {
         this.listOrderLines = listOrderLines;
     }
+    
+    
+    
 }

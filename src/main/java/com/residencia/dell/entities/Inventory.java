@@ -22,6 +22,12 @@ public class Inventory {
     @Column (name = "prod_id")
     private Integer prodId;
 
+    @Column (name = "quan_in_stock")
+    private Integer quantInStock;
+
+    @Column (name = "sales")
+    private Integer sales;
+
     public Integer getProdId() {
         return prodId;
     }
@@ -29,9 +35,6 @@ public class Inventory {
     public void setProdId(Integer prodId) {
         this.prodId = prodId;
     }
-    
-    @Column (name = "quan_in_stock")
-    private Integer quantInStock;
 
     public Integer getQuantInStock() {
         return quantInStock;
@@ -40,9 +43,6 @@ public class Inventory {
     public void setQuantInStock(Integer quantInStock) {
         this.quantInStock = quantInStock;
     }
-    
-    @Column (name = "sales")
-    private Integer sales;
 
     public Integer getSales() {
         return sales;
@@ -51,6 +51,7 @@ public class Inventory {
     public void setSales(Integer sales) {
         this.sales = sales;
     }
+    
     
     
     

@@ -1,6 +1,7 @@
 
 package com.residencia.dell.controllers;
 
+import com.residencia.dell.VO.NotaFiscalVO;
 import com.residencia.dell.VO.OrdersVO;
 import com.residencia.dell.services.OrdersService;
 import java.util.List;
@@ -35,6 +36,12 @@ public class OrdersController {
         return new ResponseEntity <> (ordersService.findById(id), headers, HttpStatus.OK);
     }
     
+    @GetMapping("/notafiscal/{id}")
+	public ResponseEntity<NotaFiscalVO> emitirNotaFiscal(@PathVariable Integer id) {
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<>(ordersService.emitirNotaFiscal(id), headers, HttpStatus.OK);
+	}
+    
     @GetMapping //Paginacao com parametro, passa os parametros na requisicao
 	public ResponseEntity <List <OrdersVO>> findAll (Pageable pagina) {
             List <OrdersVO> listOrdersVO = ordersService.findAll(pagina);
@@ -57,9 +64,10 @@ public class OrdersController {
         }
         
     @PutMapping ("/{id}")
-        public ResponseEntity <OrdersVO> update (@PathVariable Integer id, @RequestBody OrdersVO ordersVO) {
+        public ResponseEntity <OrdersVO> update (@PathVariable Integer id, @PathVariable Integer idOrderLine, 
+                @RequestBody OrdersVO ordersVO) {
             HttpHeaders headers = new HttpHeaders ();
-            return new ResponseEntity <> (ordersService.update(id, ordersVO), headers, HttpStatus.OK);
+            return new ResponseEntity <> (ordersService.update(id, idOrderLine, ordersVO), headers, HttpStatus.OK);
         }
         
     

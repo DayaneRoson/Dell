@@ -26,37 +26,13 @@ public class Cust_Hist implements Serializable {
     
     @Id @GeneratedValue long id;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-    
     @ManyToOne
     @JoinColumn (name = "customerid", referencedColumnName = "customerid")
     private Customers customer;
 
-    public Customers getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customers customer) {
-        this.customer = customer;
-    }
-    
     @Column (name = "orderid")
     private Integer orderid;
 
-    public Integer getOrderid() {
-        return orderid;
-    }
-
-    public void setOrderid(Integer orderid) {
-        this.orderid = orderid;
-    }
-    
     @Column (name = "prod_id")
     private Integer prodId;
 
@@ -68,5 +44,27 @@ public class Cust_Hist implements Serializable {
         this.prodId = prodId;
     }
     
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
     
+    public Customers getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customers customer) {
+        this.customer = customer;
+    }
+    
+     public Integer getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(Integer orderid) {
+        this.orderid = orderid;
+    }
 }

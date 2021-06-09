@@ -1,11 +1,15 @@
 
 package com.residencia.dell.services;
 
+import com.residencia.dell.VO.ItemOrderLinesVO;
+import com.residencia.dell.VO.NotaFiscalVO;
+import com.residencia.dell.VO.OrderLinesVO;
 import com.residencia.dell.VO.OrdersVO;
+import com.residencia.dell.entities.OrderLines;
 import com.residencia.dell.entities.Orders;
 import com.residencia.dell.repositories.CustomersRepository;
-import com.residencia.dell.repositories.OrderLinesRepository;
 import com.residencia.dell.repositories.OrdersRepository;
+import com.residencia.dell.repositories.ProductsRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ public class OrdersService {
     @Autowired
     public CustomersRepository customerRepository;
     
+    @Autowired
+    public ProductsRepository productsRepository;
     
     public OrdersVO findById (Integer id) {
        Orders orders =  ordersRepository.findById (id).get();
@@ -33,8 +39,10 @@ public class OrdersService {
     }
     
     public List <OrdersVO> findAll (Pageable page) {
-        List <Orders> listOrders = ordersRepository.findAll(page).getContent(); //qual é a diferença entre getContent() e toList ()
         List <OrdersVO> listOrdersVO = new ArrayList <> ();
+        List <Orders> listOrders = null;
+        
+        listOrders = ordersRepository.findAll(page).getContent();
         
         for (Orders orders : listOrders) {
             OrdersVO ordersVO = converteEntidadeVO (orders);
@@ -67,6 +75,8 @@ public class OrdersService {
 
      private OrdersVO converteEntidadeVO(Orders orders) {
         OrdersVO ordersVO = new OrdersVO ();
+        List <OrderLines> listOrderLines = orders.getListOrderLines();
+        List<OrderLinesVO> listOrderLinesVO = new ArrayList<>();
         
         ordersVO.setOrderId(orders.getOrderId());
         ordersVO.setOrderDate(orders.getOrderDate());
@@ -89,19 +99,98 @@ public class OrdersService {
         ordersVO.setCreditCard(orders.getCustomer().getCreditCard());
         ordersVO.setCreditCardExpiration(orders.getCustomer().getCreditCardExpiration());
         
+        for (OrderLines listinhaOrderLines : listOrderLines) {
+            OrderLinesVO orderLinesVO = new OrderLinesVO (listinhaOrderLines.getOrderLineId(), 
+                    listinhaOrderLines.getProdId(), listinhaOrderLines.getQuantity(),
+                    listinhaOrderLines.getOrderDate());
+            
+            listOrderLinesVO.add(orderLinesVO);
+        }
+        ordersVO.setListOrderLinesVO(listOrderLinesVO);
         return ordersVO;
     }
      
      private Orders converteVOEntidade(OrdersVO ordersVO, Integer id) {
         Orders orders = new Orders ();
-        
+        List <OrderLinesVO> listOrderLinesVO = ordersVO.getListOrderLinesVO();
+        List <OrderLines> listOrderLines = new ArrayList <> (); 
         orders.setOrderId((null == id) ? ordersVO.getOrderId() : id);
-        orders.setOrderDate(orders.getOrderDate());
+        orders.setOrderDate(ordersVO.getOrderDate());
         orders.setCustomer(customerRepository.findById(ordersVO.getCustomerId()).get());
-        orders.setNetAmount(orders.getNetAmount());
-        orders.setTax(orders.getTax());
-        orders.setTotalAmount(orders.getTotalAmount());
+        orders.setNetAmount(ordersVO.getNetAmount());
+        orders.setTax(ordersVO.getTax());
+        orders.setTotalAmount(ordersVO.getTotalAmount());
         
+        
+        for (OrderLinesVO orderlinesVO: listOrderLinesVO) {
+            OrderLines orderlines = new OrderLines ();
+            
+            //(null == id) ? ordersVO.getOrderId() : idnull == idOrderLine) ? orderlinesVO.getOrderLineId() : idOrderLine
+            orderlines.setOrderLineId((orderlinesVO.getOrderLineId()));
+            orderlines.setProdId(orderlinesVO.getProdId());
+            orderlines.setQuantity(orderlinesVO.getQuantity());
+            orderlines.setOrderDate(orderlinesVO.getOrderDate());
+            
+            listOrderLines.add(orderlines);
+        }
+        orders.setListOrderLines(listOrderLines);
         return orders;
     }
+     
+    public NotaFiscalVO emitirNotaFiscal (Integer orderId) {
+        
+        Orders orders = ordersRepository.findById(orderId).get();
+        List <OrderLines> listOrderlines = orders.getListOrderLines();
+        
+        NotaFiscalVO notafiscalVO = new NotaFiscalVO ();
+        
+        notafiscalVO.setOrderId(orders.getOrderId());
+        notafiscalVO.setOrderDate(orders.getOrderDate());
+        notafiscalVO.setNetAmount(orders.getNetAmount());
+        notafiscalVO.setTax(orders.getTax());
+        notafiscalVO.setTotalAmount(orders.getTotalAmount());
+        
+        if (orders.getCustomer() != null) {
+            notafiscalVO.setCustomerId(orders.getCustomer().getCustomerId());
+            notafiscalVO.setCustomerFirstName(orders.getCustomer().getFirstName());
+            notafiscalVO.setCustomerLastName(orders.getCustomer().getLastName());
+            notafiscalVO.setUsername(orders.getCustomer().getUsername());
+            if (orders.getCustomer().getAddress1() != null) {
+                notafiscalVO.setAddress(orders.getCustomer().getAddress1());
+            } else {
+                notafiscalVO.setAddress(orders.getCustomer().getAddress2());
+            }
+            notafiscalVO.setCity(orders.getCustomer().getCity());
+            notafiscalVO.setState(orders.getCustomer().getState());
+            notafiscalVO.setZipCode(orders.getCustomer().getZipCode());
+            notafiscalVO.setPhone(orders.getCustomer().getPhone());
+            notafiscalVO.setCreditCardType(orders.getCustomer().getCreditCardType());
+            notafiscalVO.setCreditCard(orders.getCustomer().getCreditCard());
+            notafiscalVO.setCreditCardExpiration(orders.getCustomer().getCreditCardExpiration());
+        
+        
+        List <ItemOrderLinesVO> listItemOrderLinesVO = new ArrayList <> ();
+        //List <ProductsVO> listProductsVO = new ArrayList <> ();
+        for (OrderLines orderLines : listOrderlines) {
+            ItemOrderLinesVO itemOrderLinesVO = new ItemOrderLinesVO (orderLines.getProdId(), 
+                    orderLines.getQuantity(), orderLines.getOrderDate());
+            if (productsRepository.findById(orderLines.getProdId()).get() != null) {
+                 itemOrderLinesVO.setPrice(productsRepository.findById(orderLines.getProdId()).get().getPrice());
+                 itemOrderLinesVO.setTitle(productsRepository.findById(orderLines.getProdId()).get().getTitle());
+            } else {
+                 itemOrderLinesVO.setPrice(null);
+                 itemOrderLinesVO.setTitle(null);
+            }
+            //listProductsVO.add(productsService.findByIdVO(orderLines.getProdId()));
+            listItemOrderLinesVO.add(itemOrderLinesVO);
+            //notafiscalVO.setProductsVO(listProductsVO);
+            //notafiscalVO.setProductsVO(productsService.findByIdVO(orderLines.getProdId()));
+        }
+        //notafiscalVO.setProductsVO(listProductsVO);
+        notafiscalVO.setListItemOrderLinesVO(listItemOrderLinesVO);
+        
+        }
+        return notafiscalVO;
+    }
+     
 }

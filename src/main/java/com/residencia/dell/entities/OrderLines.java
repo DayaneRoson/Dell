@@ -6,9 +6,11 @@ import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -19,18 +21,24 @@ import javax.persistence.Table;
 @Table (name = "orderlines")
 public class OrderLines implements Serializable {
     
-    @Id @GeneratedValue long id;
-    
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderlineid_seq")
+    @SequenceGenerator (name = "orderlineid_seq", sequenceName = "sequence_orderlineid" )
     @Column (name = "orderlineid")
     private Integer orderLineId;
+
+    @ManyToOne
+    @JoinColumn (name = "orderid", referencedColumnName  = "orderid")
+    private Orders orders;
+
+    @Column (name = "prod_id")
+    private Integer prodId;
+
+    @Column (name = "quantity")
+    private Integer quantity;
+
+    @Column (name = "orderdate")
+    private Calendar orderDate;
 
     public Integer getOrderLineId() {
         return orderLineId;
@@ -39,10 +47,6 @@ public class OrderLines implements Serializable {
     public void setOrderLineId(Integer orderLineId) {
         this.orderLineId = orderLineId;
     }
-    
-    @ManyToOne
-    @JoinColumn (name = "orderid", referencedColumnName  = "orderid")
-    private Orders orders;
 
     public Orders getOrders() {
         return orders;
@@ -51,9 +55,6 @@ public class OrderLines implements Serializable {
     public void setOrders(Orders orders) {
         this.orders = orders;
     }
-    
-    @Column (name = "prod_id")
-    private Integer prodId;
 
     public Integer getProdId() {
         return prodId;
@@ -62,9 +63,6 @@ public class OrderLines implements Serializable {
     public void setProdId(Integer prodId) {
         this.prodId = prodId;
     }
-    
-    @Column (name = "quantity")
-    private Integer quantity;
 
     public Integer getQuantity() {
         return quantity;
@@ -73,9 +71,6 @@ public class OrderLines implements Serializable {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    
-    @Column (name = "orderdate")
-    private Calendar orderDate;
 
     public Calendar getOrderDate() {
         return orderDate;
@@ -84,8 +79,6 @@ public class OrderLines implements Serializable {
     public void setOrderDate(Calendar orderDate) {
         this.orderDate = orderDate;
     }
-    
-    
     
     
 }

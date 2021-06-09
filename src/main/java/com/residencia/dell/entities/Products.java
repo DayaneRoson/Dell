@@ -24,6 +24,25 @@ public class Products {
     @Column (name = "prod_id")
     private Integer prodId;
 
+    @ManyToOne
+    @JoinColumn (name = "category", referencedColumnName = "category")
+    private Categories category;
+
+    @Column (name = "title")
+    private String title;
+
+    @Column (name = "actor")
+    private String actor;
+
+    @Column (name = "price")
+    private BigDecimal price;
+
+    @Column (name = "special")
+    private Integer special;
+
+    @Column (name = "common_prod_id")
+    private Integer commonProdId;
+
     public Integer getProdId() {
         return prodId;
     }
@@ -31,10 +50,6 @@ public class Products {
     public void setProdId(Integer prodId) {
         this.prodId = prodId;
     }
-    
-    @ManyToOne
-    @JoinColumn (name = "category", referencedColumnName = "category")
-    private Categories category;
 
     public Categories getCategory() {
         return category;
@@ -43,9 +58,6 @@ public class Products {
     public void setCategory(Categories category) {
         this.category = category;
     }
-    
-    @Column (name = "title")
-    private String title;
 
     public String getTitle() {
         return title;
@@ -54,9 +66,6 @@ public class Products {
     public void setTitle(String title) {
         this.title = title;
     }
-    
-    @Column (name = "actor")
-    private String actor;
 
     public String getActor() {
         return actor;
@@ -65,9 +74,6 @@ public class Products {
     public void setActor(String actor) {
         this.actor = actor;
     }
-    
-    @Column (name = "price")
-    private BigDecimal price;
 
     public BigDecimal getPrice() {
         return price;
@@ -76,9 +82,6 @@ public class Products {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-    
-    @Column (name = "special")
-    private Integer special;
 
     public Integer getSpecial() {
         return special;
@@ -87,9 +90,6 @@ public class Products {
     public void setSpecial(Integer special) {
         this.special = special;
     }
-    
-    @Column (name = "common_prod_id")
-    private Integer commonProdId;
 
     public Integer getCommonProdId() {
         return commonProdId;
@@ -99,6 +99,7 @@ public class Products {
         this.commonProdId = commonProdId;
     }
 
+    
     
     
     

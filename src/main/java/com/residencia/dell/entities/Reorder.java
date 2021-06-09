@@ -21,6 +21,25 @@ public class Reorder implements Serializable {
     
     @Id @GeneratedValue long id;
 
+    @OneToOne
+    @JoinColumn (name = "prod_id", referencedColumnName = "prod_id")
+    private Products product;
+
+    @Column (name = "date_low")
+    private Calendar dateLow;
+
+    @Column (name = "quan_low")
+    private Integer quanLow;
+
+    @Column (name = "date_reordered")
+    private Calendar dateReordered;
+
+    @Column (name = "quan_reordered")
+    private Integer quanReordered;
+
+    @Column (name = "dateexpected")
+    private Calendar dateExpected;
+
     public long getId() {
         return id;
     }
@@ -28,10 +47,6 @@ public class Reorder implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    
-    @OneToOne
-    @JoinColumn (name = "prod_id", referencedColumnName = "prod_id")
-    private Products product;
 
     public Products getProduct() {
         return product;
@@ -40,9 +55,6 @@ public class Reorder implements Serializable {
     public void setProduct(Products product) {
         this.product = product;
     }
-    
-    @Column (name = "date_low")
-    private Calendar dateLow;
 
     public Calendar getDateLow() {
         return dateLow;
@@ -51,9 +63,6 @@ public class Reorder implements Serializable {
     public void setDateLow(Calendar dateLow) {
         this.dateLow = dateLow;
     }
-    
-    @Column (name = "quan_low")
-    private Integer quanLow;
 
     public Integer getQuanLow() {
         return quanLow;
@@ -62,9 +71,6 @@ public class Reorder implements Serializable {
     public void setQuanLow(Integer quanLow) {
         this.quanLow = quanLow;
     }
-    
-    @Column (name = "date_reordered")
-    private Calendar dateReordered;
 
     public Calendar getDateReordered() {
         return dateReordered;
@@ -73,9 +79,6 @@ public class Reorder implements Serializable {
     public void setDateReordered(Calendar dateReordered) {
         this.dateReordered = dateReordered;
     }
-    
-    @Column (name = "quan_reordered")
-    private Integer quanReordered;
 
     public Integer getQuanReordered() {
         return quanReordered;
@@ -84,9 +87,6 @@ public class Reorder implements Serializable {
     public void setQuanReordered(Integer quanReordered) {
         this.quanReordered = quanReordered;
     }
-    
-    @Column (name = "dateexpected")
-    private Calendar dateExpected;
 
     public Calendar getDateExpected() {
         return dateExpected;
@@ -95,5 +95,6 @@ public class Reorder implements Serializable {
     public void setDateExpected(Calendar dateExpected) {
         this.dateExpected = dateExpected;
     }
+
     
 }

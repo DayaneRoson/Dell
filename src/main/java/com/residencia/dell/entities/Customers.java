@@ -1,6 +1,7 @@
 
 package com.residencia.dell.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,75 @@ public class Customers {
     @Column (name = "customerid")
     private Integer customerId;
 
+   
+    @Column (name = "firstname")
+    private String firstName;
+
+    
+    @Column (name = "lastname")
+    private String lastName;
+
+    
+    @Column (name = "address1")
+    private String address1;
+
+    
+    @Column (name = "address2")
+    private String address2;
+
+    
+    @Column (name = "city")
+    private String city;
+
+    @Column (name = "state")
+    private String state;
+
+    @Column (name = "zip")
+    private Integer zipCode;
+
+    
+    @Column (name = "country")
+    private String country;
+
+    @Column (name = "region")
+    private Integer region;
+
+    @Column (name = "email")
+    private String email;
+
+    @Column (name = "phone")
+    private String phone;
+
+    @Column (name = "creditcardtype")
+    private Integer creditCardType;
+
+    @Column (name = "creditcard")
+    private String creditCard;
+
+    @Column (name = "creditcardexpiration")
+    private String creditCardExpiration;
+
+    @Column (name = "username", unique = true)
+    private String username;
+
+    @Column (name = "password")
+    private String password;
+
+    @Column (name = "age")
+    private Integer age;
+
+    @Column (name = "income")
+    private Integer income;
+
+    @Column (name = "gender")
+    private Character gender;
+
+    @OneToMany (mappedBy = "customer")
+    private List <Cust_Hist> listCustomerHistory;
+
+    @OneToMany (mappedBy = "customer")
+    private List <Orders> listOrders;
+
     public Integer getCustomerId() {
         return customerId;
     }
@@ -30,9 +100,6 @@ public class Customers {
     public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
-    
-    @Column (name = "firstName")
-    private String firstName;
 
     public String getFirstName() {
         return firstName;
@@ -41,9 +108,6 @@ public class Customers {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
-    @Column (name = "lastName")
-    private String lastName;
 
     public String getLastName() {
         return lastName;
@@ -52,9 +116,6 @@ public class Customers {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
-    @Column (name = "address1")
-    private String address1;
 
     public String getAddress1() {
         return address1;
@@ -63,9 +124,6 @@ public class Customers {
     public void setAddress1(String address1) {
         this.address1 = address1;
     }
-    
-    @Column (name = "address2")
-    private String address2;
 
     public String getAddress2() {
         return address2;
@@ -74,9 +132,6 @@ public class Customers {
     public void setAddress2(String address2) {
         this.address2 = address2;
     }
-    
-    @Column (name = "city")
-    private String city;
 
     public String getCity() {
         return city;
@@ -85,9 +140,6 @@ public class Customers {
     public void setCity(String city) {
         this.city = city;
     }
-    
-    @Column (name = "state")
-    private String state;
 
     public String getState() {
         return state;
@@ -96,9 +148,6 @@ public class Customers {
     public void setState(String state) {
         this.state = state;
     }
-    
-    @Column (name = "zip")
-    private Integer zipCode;
 
     public Integer getZipCode() {
         return zipCode;
@@ -107,9 +156,6 @@ public class Customers {
     public void setZipCode(Integer zipCode) {
         this.zipCode = zipCode;
     }
-    
-    @Column (name = "country")
-    private String country;
 
     public String getCountry() {
         return country;
@@ -118,9 +164,6 @@ public class Customers {
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    @Column (name = "region")
-    private Integer region;
 
     public Integer getRegion() {
         return region;
@@ -129,9 +172,6 @@ public class Customers {
     public void setRegion(Integer region) {
         this.region = region;
     }
-    
-    @Column (name = "email")
-    private String email;
 
     public String getEmail() {
         return email;
@@ -140,9 +180,6 @@ public class Customers {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    @Column (name = "phone")
-    private String phone;
 
     public String getPhone() {
         return phone;
@@ -151,9 +188,6 @@ public class Customers {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
-    @Column (name = "creditcardtype")
-    private Integer creditCardType;
 
     public Integer getCreditCardType() {
         return creditCardType;
@@ -162,9 +196,6 @@ public class Customers {
     public void setCreditCardType(Integer creditCardType) {
         this.creditCardType = creditCardType;
     }
-    
-    @Column (name = "creditcard")
-    private String creditCard;
 
     public String getCreditCard() {
         return creditCard;
@@ -173,9 +204,6 @@ public class Customers {
     public void setCreditCard(String creditCard) {
         this.creditCard = creditCard;
     }
-    
-    @Column (name = "creditcardexpiration")
-    private String creditCardExpiration;
 
     public String getCreditCardExpiration() {
         return creditCardExpiration;
@@ -184,9 +212,6 @@ public class Customers {
     public void setCreditCardExpiration(String creditCardExpiration) {
         this.creditCardExpiration = creditCardExpiration;
     }
-    
-    @Column (name = "username", unique = true)
-    private String username;
 
     public String getUsername() {
         return username;
@@ -195,9 +220,6 @@ public class Customers {
     public void setUsername(String username) {
         this.username = username;
     }
-    
-    @Column (name = "password")
-    private String password;
 
     public String getPassword() {
         return password;
@@ -206,9 +228,6 @@ public class Customers {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    @Column (name = "age")
-    private Integer age;
 
     public Integer getAge() {
         return age;
@@ -217,9 +236,6 @@ public class Customers {
     public void setAge(Integer age) {
         this.age = age;
     }
-    
-    @Column (name = "income")
-    private Integer income;
 
     public Integer getIncome() {
         return income;
@@ -228,9 +244,6 @@ public class Customers {
     public void setIncome(Integer income) {
         this.income = income;
     }
-    
-   @Column (name = "gender")
-   private Character gender;
 
     public Character getGender() {
         return gender;
@@ -239,10 +252,8 @@ public class Customers {
     public void setGender(Character gender) {
         this.gender = gender;
     }
-   
-    @OneToMany (mappedBy = "customer")
-    private List <Cust_Hist> listCustomerHistory;
-
+    
+    @JsonIgnore
     public List<Cust_Hist> getListCustomerHistory() {
         return listCustomerHistory;
     }
@@ -250,9 +261,6 @@ public class Customers {
     public void setListCustomerHistory(List<Cust_Hist> listCustomerHistory) {
         this.listCustomerHistory = listCustomerHistory;
     }
-    
-    @OneToMany (mappedBy = "customer")
-    private List <Orders> listOrders;
 
     public List<Orders> getListOrders() {
         return listOrders;
@@ -261,6 +269,7 @@ public class Customers {
     public void setListOrders(List<Orders> listOrders) {
         this.listOrders = listOrders;
     }
+    
     
     
 

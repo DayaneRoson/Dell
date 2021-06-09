@@ -2,7 +2,7 @@
 package com.residencia.dell.repositories;
 
 import com.residencia.dell.entities.Categories;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @author Dayane
  */
 @Repository
-public interface CategoriesRepository extends JpaRepository <Categories, Integer> {
+public interface CategoriesRepository extends PagingAndSortingRepository <Categories, Integer> {
     
 }

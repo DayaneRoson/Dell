@@ -4,6 +4,7 @@ package com.residencia.dell.VO;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  *
@@ -29,13 +30,13 @@ public class OrdersVO implements Serializable {
      private Integer creditCardType;
      private String creditCard;
      private String creditCardExpiration;
+     private List <OrderLinesVO> listOrderLinesVO;
      
      public OrdersVO () {
          
      }
      
-     //ainda não sei como usar o construtor completo, mas vai me facilitar em algum momento, então tá aqui
-
+     //ainda não sei onde usar o construtor completo, mas vai me facilitar em algum momento, então tá aqui
     public OrdersVO(Integer orderId, Calendar orderDate, BigDecimal netAmount, BigDecimal tax, BigDecimal totalAmount, Integer customerId, String firstName, String username, String address, String city, String state, Integer zipCode, String phone, Integer creditCardType, String creditCard, String creditCardExpiration) {
         this.orderId = orderId;
         this.orderDate = orderDate;
@@ -54,8 +55,15 @@ public class OrdersVO implements Serializable {
         this.creditCard = creditCard;
         this.creditCardExpiration = creditCardExpiration;
     }
-     
 
+    public List<OrderLinesVO> getListOrderLinesVO() {
+        return listOrderLinesVO;
+    }
+
+    public void setListOrderLinesVO(List<OrderLinesVO> listOrderLinesVO) {
+        this.listOrderLinesVO = listOrderLinesVO;
+    }
+    
     public Integer getCustomerId() {
         return customerId;
     }

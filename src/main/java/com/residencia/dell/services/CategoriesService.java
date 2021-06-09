@@ -6,6 +6,7 @@ import com.residencia.dell.repositories.CategoriesRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +19,8 @@ public class CategoriesService {
     @Autowired
     public CategoriesRepository categoriesRepository;
     
-    public List <Categories> findAll () {
-        return categoriesRepository.findAll();
+    public List <Categories> findAll (Pageable pagina) {
+        return categoriesRepository.findAll(pagina).getContent ();
     }
     
 }
