@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
 
 /**
  *
@@ -37,14 +40,15 @@ public class Orders {
 
     @Column (name = "netamount")
     private BigDecimal netAmount;
-
+    
+    @Digits (integer = 5, fraction = 2, message = "Valor Inválido para este campo")
     @Column (name = "tax")
     private BigDecimal tax;
 
     @Column (name = "totalamount")
     private BigDecimal totalAmount;
 
-    @OneToMany (mappedBy = "orders")
+    @OneToMany (mappedBy = "orders", fetch = FetchType.EAGER)
     private List <OrderLines> listOrderLines;
 
     public Integer getOrderId() {

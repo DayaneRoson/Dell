@@ -8,6 +8,7 @@ import com.residencia.dell.VO.OrdersVO;
 import com.residencia.dell.entities.OrderLines;
 import com.residencia.dell.entities.Orders;
 import com.residencia.dell.repositories.CustomersRepository;
+import com.residencia.dell.repositories.OrderLinesRepository;
 import com.residencia.dell.repositories.OrdersRepository;
 import com.residencia.dell.repositories.ProductsRepository;
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class OrdersService {
     
     @Autowired
     public ProductsRepository productsRepository;
+    
+    @Autowired
+    public OrderLinesRepository orderlineRepository;
+    
     
     public OrdersVO findById (Integer id) {
        Orders orders =  ordersRepository.findById (id).get();
@@ -57,7 +62,6 @@ public class OrdersService {
     
     public OrdersVO save (OrdersVO ordersVO) {
         Orders newOrders = converteVOEntidade (ordersVO, null);
-        ordersRepository.save(newOrders);
         return converteEntidadeVO (newOrders);
     }
     
@@ -100,7 +104,7 @@ public class OrdersService {
         ordersVO.setCreditCardExpiration(orders.getCustomer().getCreditCardExpiration());
         
         for (OrderLines listinhaOrderLines : listOrderLines) {
-            OrderLinesVO orderLinesVO = new OrderLinesVO (listinhaOrderLines.getOrderLineId(), 
+            OrderLinesVO orderLinesVO = new OrderLinesVO (listinhaOrderLines.getOrderLinesId(), 
                     listinhaOrderLines.getProdId(), listinhaOrderLines.getQuantity(),
                     listinhaOrderLines.getOrderDate());
             
@@ -121,17 +125,21 @@ public class OrdersService {
         orders.setTax(ordersVO.getTax());
         orders.setTotalAmount(ordersVO.getTotalAmount());
         
+        ordersRepository.save(orders);
         
+        Integer contador = 1;
         for (OrderLinesVO orderlinesVO: listOrderLinesVO) {
-            OrderLines orderlines = new OrderLines ();
             
-            //(null == id) ? ordersVO.getOrderId() : idnull == idOrderLine) ? orderlinesVO.getOrderLineId() : idOrderLine
-            orderlines.setOrderLineId((orderlinesVO.getOrderLineId()));
-            orderlines.setProdId(orderlinesVO.getProdId());
-            orderlines.setQuantity(orderlinesVO.getQuantity());
-            orderlines.setOrderDate(orderlinesVO.getOrderDate());
+            OrderLines orderlines = new OrderLines(contador, 
+            		orders.getOrderId(),
+            		orderlinesVO.getProdId(),
+            		orderlinesVO.getQuantity(),
+            		orderlinesVO.getOrderDate()
+            		);
             
+            orderlineRepository.save(orderlines);
             listOrderLines.add(orderlines);
+            contador++;
         }
         orders.setListOrderLines(listOrderLines);
         return orders;
@@ -192,5 +200,22 @@ public class OrdersService {
         }
         return notafiscalVO;
     }
+    
+    //(null == id) ? ordersVO.getOrderId() : idnull == idOrderLine) ? orderlinesVO.getOrderLineId() : idOrderLine
+            
+            //EntityManagerFactory factory = Persistence.createEntityManagerFactory("OrderLines"); ACHAR O PERSISTENCE.XML
+            //EntityManager entityManager = factory.createEntityManager();
      
+    /*OrderLines orderlines = new OrderLines ();
+            
+            orderlines.setOrderLineId((orderlinesVO.getOrderLineId()));
+            orderlines.setProdId(orderlinesVO.getProdId());
+            orderlines.setQuantity(orderlinesVO.getQuantity());
+            orderlines.setOrderDate(orderlinesVO.getOrderDate());*/
+            
+            //entityManager.getTransaction().begin();
+            //entityManager.persist(orderlines);
+            //entityManager.getTransaction().commit();
+            //entityManager.close();
+            //factory.close();
 }

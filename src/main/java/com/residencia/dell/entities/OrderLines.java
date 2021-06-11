@@ -4,6 +4,7 @@ package com.residencia.dell.entities;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,14 +22,13 @@ import javax.persistence.Table;
 @Table (name = "orderlines")
 public class OrderLines implements Serializable {
     
-    @Id 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderlineid_seq")
-    @SequenceGenerator (name = "orderlineid_seq", sequenceName = "sequence_orderlineid" )
-    @Column (name = "orderlineid")
-    private Integer orderLineId;
+    private static final long serialVersionUID = 1L;
+    
+    @EmbeddedId
+    OrderLinesId orderLinesId;
 
     @ManyToOne
-    @JoinColumn (name = "orderid", referencedColumnName  = "orderid")
+    @JoinColumn (name = "orderid", referencedColumnName  = "orderid",  insertable = false, updatable = false)
     private Orders orders;
 
     @Column (name = "prod_id")
@@ -40,14 +40,7 @@ public class OrderLines implements Serializable {
     @Column (name = "orderdate")
     private Calendar orderDate;
 
-    public Integer getOrderLineId() {
-        return orderLineId;
-    }
-
-    public void setOrderLineId(Integer orderLineId) {
-        this.orderLineId = orderLineId;
-    }
-
+   
     public Orders getOrders() {
         return orders;
     }
@@ -77,6 +70,25 @@ public class OrderLines implements Serializable {
     }
 
     public void setOrderDate(Calendar orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public OrderLinesId getOrderLinesId() {
+        return orderLinesId;
+    }
+
+    public void setOrderLinesId(OrderLinesId orderLinesId) {
+        this.orderLinesId = orderLinesId;
+    }
+
+    public OrderLines() {
+    }
+    
+    public OrderLines(Integer orderLinesId, Integer orderId, Integer prodId, Integer quantity, Calendar orderDate) {
+        this.orderLinesId = new OrderLinesId (orderLinesId, orderId);
+        this.orders = orders;
+        this.prodId = prodId;
+        this.quantity = quantity;
         this.orderDate = orderDate;
     }
     

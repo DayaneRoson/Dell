@@ -1,7 +1,9 @@
 
 package com.residencia.dell.services;
 
+import com.residencia.dell.VO.OrderLinesVO;
 import com.residencia.dell.entities.OrderLines;
+import com.residencia.dell.entities.OrderLinesId;
 import com.residencia.dell.entities.Orders;
 import com.residencia.dell.repositories.OrderLinesRepository;
 import com.residencia.dell.repositories.OrdersRepository;
@@ -20,13 +22,9 @@ public class OrderlinesService {
     @Autowired //acabei de descobrir que nao pode ter injecoes de dependencia que voce nao ta usando no negocio
     public OrderLinesRepository orderlinesRepository;
     
-    @Autowired
-    public OrdersRepository ordersRepository;
-    
-    
-    public OrderLines findById (Integer orderlineid, Integer orderid) {
-       Orders order = ordersRepository.findById(orderid).get();
-       return orderlinesRepository.findByOrderLineIdAndOrders(orderlineid, order);
+    public OrderLines findById (OrderLinesId orderlineid) {
+       return orderlinesRepository.findById(orderlineid).get();
+      
     }
     
     public List <OrderLines> findAll (Pageable page) {
@@ -42,23 +40,49 @@ public class OrderlinesService {
         return newOrderLine;
     }
     
-    public void delete (Integer orderlineid, Integer orderid) {
-        Orders orders = ordersRepository.findById(orderid).get();
-        orderlinesRepository.deleteByOrderLineIdAndOrders(orderlineid, orders);
+    /*public OrderLinesVO saveVO (OrderLinesVO orderlinesVO) {
+       OrderLines newOrderLines = converteVOEntidade (orderlinesVO, null);
+       orderlinesRepository.save(newOrderLines);
+       return converteEntidadeVO (newOrderLines);
+    }*/
+    
+    public void delete (OrderLinesId orderlineid) {
+        orderlinesRepository.deleteById(orderlineid);
     }
     
-    public OrderLines update (Integer orderlineid, Integer orderid, OrderLines orderline) {
-        Orders orders = ordersRepository.findById(orderid).get();
-        OrderLines newOrderLine = orderlinesRepository.findByOrderLineIdAndOrders(orderlineid, orders);
+    public OrderLines update (OrderLinesId orderlineid, OrderLines orderline) {
+        OrderLines newOrderLine = orderlinesRepository.findById(orderlineid).get();
         updateDados (newOrderLine, orderline);
         return orderlinesRepository.save(newOrderLine);
     }
 
     private void updateDados(OrderLines newOrderLine, OrderLines orderline) {
-        newOrderLine.setOrderLineId(orderline.getOrderLineId());
+        
         newOrderLine.setOrderDate(orderline.getOrderDate());
         newOrderLine.setOrders(orderline.getOrders());
         newOrderLine.setProdId(orderline.getProdId());
         newOrderLine.setQuantity(orderline.getQuantity());
     }
+
+    /*public OrderLines converteVOEntidade(OrderLinesVO orderlinesVO, Integer id) {
+        OrderLines orderlines = new OrderLines ();
+        
+        orderlines.setOrderLineId((null == id) ? orderlinesVO.getOrderLineId() : id);
+        orderlines.setProdId(orderlinesVO.getProdId());
+        orderlines.setQuantity(orderlinesVO.getQuantity());
+        orderlines.setOrderDate(orderlinesVO.getOrderDate());
+       
+        return orderlines;
+    }
+
+    public OrderLinesVO converteEntidadeVO(OrderLines orderLines) {
+        
+        OrderLinesVO orderlinesVO = new OrderLinesVO ();
+        
+        orderlinesVO.setProdId(orderLines.getProdId());
+        orderlinesVO.setQuantity(orderLines.getQuantity());
+        orderlinesVO.setOrderDate(orderLines.getOrderDate());
+        
+        return orderlinesVO;
+    }*/
 }
